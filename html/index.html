@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="form">
+        <h1>Register</h1>
+
+        <input type="name" class="name" placeholder="name">
+        <input type="email" class="email" placeholder="email">
+        <input type="text" placeholder="title" class="title">
+
+    </form>
+    <button class="btnPost" style="margin-top: 5%;">POST user</button>
+    <button class="btnPut" style="margin-top: 5%;">PUT user</button>
+    <button class="btnGet" style="margin-top: 5%;">GET users</button>
+    <button class="btnDelete" style="margin-top: 5%;">DELETE user</button>
+    <script>
+        const name = document.querySelector('.name');
+        const email = document.querySelector('.email');
+        const title = document.querySelector('.title');
+
+        const btnPost = document.querySelector('.btnPost');
+        const btnPut = document.querySelector('.btnPut');
+        const btnGet = document.querySelector('.btnGet');
+        const btnDelete = document.querySelector('.btnDelete');
+        btnPost.addEventListener('click', async function () {
+
+            const user = {
+                name: name.value,
+                email: email.value,
+                title: title.value
+            }
+            console.log(user);
+            try {
+                const response = await fetch('/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+                if (!response.ok) {
+                    throw new Error(`Помилка сервера: ${response.status}`);
+                }
+                const data = await response.json();
+            } catch (error) {
+                console.error('Помилка:', error);
+            }
+        });
+
+        btnPut.addEventListener('click', async function () {
+            const user = {
+                name: name.value,
+                email: email.value,
+                title: title.value
+            }
+            console.log(user);
+
+            try {
+                const response = await fetch('/users', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+                if (!response.ok) {
+                    throw new Error(`Помилка сервера: ${response.status}`);
+                }
+                const data = await response.json();
+            } catch (error) {
+                console.error('Помилка:', error);
+            }
+        });
+
+        btnDelete.addEventListener('click', async function () {
+            const user = {
+                name: name.value,
+                email: email.value,
+
+            }
+            try {
+                const response = await fetch('/users', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+                if (!response.ok) {
+                    throw new Error(`Помилка сервера: ${response.status}`);
+                }
+                const data = await response.json();
+            } catch (error) {
+                console.error('Помилка:', error);
+            }
+        })
+
+
+        btnGet.addEventListener('click', async function () {
+            try {
+                const response = await fetch('/users');
+                if (!response.ok) {
+                    throw new Error(`Помилка сервера: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data);
+
+            } catch (error) {
+                console.error('Помилка:', error);
+            }
+        })
+    </script>
+</body>
+
+</html>
